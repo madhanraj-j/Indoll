@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Invoice Scan</title>
+</head>
+<body>
+<h2>Invoice Scan</h2>
+
+<input id="lot" placeholder="LOT ID"><br><br>
+<input id="invoice" placeholder="Invoice No"><br><br>
+
+<select id="lsp">
+  <option value="A">LSP A</option>
+  <option value="B">LSP B</option>
+</select><br><br>
+
+<button onclick="scan()">Scan Invoice</button>
+
+<p id="result"></p>
+
+<script>
+function scan() {
+  fetch("/scan", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      lot_id: document.getElementById("lot").value,
+      invoice_no: document.getElementById("invoice").value,
+      lsp: document.getElementById("lsp").value
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("result").innerText =
+      "Serial Generated: " + data.serial_display;
+  });
+}
+</script>
+</body>
+</html>
